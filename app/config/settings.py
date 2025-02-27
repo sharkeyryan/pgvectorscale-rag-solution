@@ -7,7 +7,7 @@ from typing import Optional
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 
-load_dotenv(dotenv_path="./.env")
+load_dotenv(dotenv_path="./app/.env")
 
 
 def setup_logging():
@@ -25,12 +25,11 @@ class LLMSettings(BaseModel):
     max_retries: int = 3
 
 
-class OpenAISettings(LLMSettings):
-    """OpenAI-specific settings extending LLMSettings."""
+class OllamaSettings(LLMSettings):
+    """Ollama-specific settings extending LLMSettings."""
 
-    api_key: str = Field(default_factory=lambda: os.getenv("OPENAI_API_KEY"))
-    default_model: str = Field(default="gpt-4o")
-    embedding_model: str = Field(default="text-embedding-3-small")
+    default_model: str = Field(default="llama3.2:1b")
+    embedding_model: str = Field(default="nomic-embed-text")
 
 
 class DatabaseSettings(BaseModel):
@@ -43,14 +42,14 @@ class VectorStoreSettings(BaseModel):
     """Settings for the VectorStore."""
 
     table_name: str = "embeddings"
-    embedding_dimensions: int = 1536
+    embedding_dimensions: int = 768
     time_partition_interval: timedelta = timedelta(days=7)
 
 
 class Settings(BaseModel):
     """Main settings class combining all sub-settings."""
 
-    openai: OpenAISettings = Field(default_factory=OpenAISettings)
+    ollama: OllamaSettings = Field(default_factory=OllamaSettings)
     database: DatabaseSettings = Field(default_factory=DatabaseSettings)
     vector_store: VectorStoreSettings = Field(default_factory=VectorStoreSettings)
 
@@ -58,6 +57,7 @@ class Settings(BaseModel):
 @lru_cache()
 def get_settings() -> Settings:
     """Create and return a cached instance of the Settings."""
+
     settings = Settings()
     setup_logging()
     return settings

@@ -1,6 +1,7 @@
 pandas
 openai
 psycopg
+psycopg2
 python-dotenv
 timescale-vector
 instructor

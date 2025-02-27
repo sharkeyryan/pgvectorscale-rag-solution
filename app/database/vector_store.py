@@ -5,7 +5,9 @@ from datetime import datetime
 
 import pandas as pd
 from config.settings import get_settings
-from openai import OpenAI
+
+import ollama
+
 from timescale_vector import client
 
 
@@ -15,8 +17,8 @@ class VectorStore:
     def __init__(self):
         """Initialize the VectorStore with settings, OpenAI client, and Timescale Vector client."""
         self.settings = get_settings()
-        self.openai_client = OpenAI(api_key=self.settings.openai.api_key)
-        self.embedding_model = self.settings.openai.embedding_model
+        self.ollama_client = ollama
+        self.embedding_model = self.settings.ollama.embedding_model
         self.vector_settings = self.settings.vector_store
         self.vec_client = client.Sync(
             self.settings.database.service_url,
@@ -24,6 +26,8 @@ class VectorStore:
             self.vector_settings.embedding_dimensions,
             time_partition_interval=self.vector_settings.time_partition_interval,
         )
+
+        print("VestorStore service_url:" + self.settings.database.service_url)
 
     def get_embedding(self, text: str) -> List[float]:
         """
@@ -37,14 +41,15 @@ class VectorStore:
         """
         text = text.replace("\n", " ")
         start_time = time.time()
+
         embedding = (
-            self.openai_client.embeddings.create(
-                input=[text],
+            self.ollama_client.embeddings(
+                prompt=text,
                 model=self.embedding_model,
             )
-            .data[0]
             .embedding
         )
+
         elapsed_time = time.time() - start_time
         logging.info(f"Embedding generated in {elapsed_time:.3f} seconds")
         return embedding
