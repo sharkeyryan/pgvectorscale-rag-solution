@@ -1,5 +1,5 @@
 pandas
-openai
+ollama
 psycopg
 psycopg2
 python-dotenv

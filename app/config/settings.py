@@ -28,6 +28,7 @@ class LLMSettings(BaseModel):
 class OllamaSettings(LLMSettings):
     """Ollama-specific settings extending LLMSettings."""
 
+    base_url: str = Field(default="http://localhost:11434/v1")
     default_model: str = Field(default="llama3.2:1b")
     embedding_model: str = Field(default="nomic-embed-text")
 

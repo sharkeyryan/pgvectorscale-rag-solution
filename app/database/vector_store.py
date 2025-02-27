@@ -15,7 +15,7 @@ class VectorStore:
     """A class for managing vector operations and database interactions."""
 
     def __init__(self):
-        """Initialize the VectorStore with settings, OpenAI client, and Timescale Vector client."""
+        """Initialize the VectorStore with settings, Ollama client, and Timescale Vector client."""
         self.settings = get_settings()
         self.ollama_client = ollama
         self.embedding_model = self.settings.ollama.embedding_model
@@ -27,7 +27,6 @@ class VectorStore:
             time_partition_interval=self.vector_settings.time_partition_interval,
         )
 
-        print("VestorStore service_url:" + self.settings.database.service_url)
 
     def get_embedding(self, text: str) -> List[float]:
         """
@@ -54,17 +53,21 @@ class VectorStore:
         logging.info(f"Embedding generated in {elapsed_time:.3f} seconds")
         return embedding
 
+
     def create_tables(self) -> None:
         """Create the necessary tablesin the database"""
         self.vec_client.create_tables()
+
 
     def create_index(self) -> None:
         """Create the StreamingDiskANN index to spseed up similarity search"""
         self.vec_client.create_embedding_index(client.DiskAnnIndex())
 
+
     def drop_index(self) -> None:
         """Drop the StreamingDiskANN index in the database"""
         self.vec_client.drop_embedding_index()
+
 
     def upsert(self, df: pd.DataFrame) -> None:
         """
@@ -79,6 +82,7 @@ class VectorStore:
         logging.info(
             f"Inserted {len(df)} records into {self.vector_settings.table_name}"
         )
+
 
     def search(
         self,
@@ -156,6 +160,7 @@ class VectorStore:
         else:
             return results
 
+
     def _create_dataframe_from_results(
         self,
         results: List[Tuple[Any, ...]],
@@ -183,6 +188,7 @@ class VectorStore:
         df["id"] = df["id"].astype(str)
 
         return df
+
 
     def delete(
         self,
