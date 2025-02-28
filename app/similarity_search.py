@@ -11,7 +11,7 @@ vec = VectorStore()
 # --------------------------------------------------------------
 
 relevant_question = "What are your shipping options?"
-results = vec.search(relevant_question, limit=3)
+results = vec.search(relevant_question, limit=6)
 
 response = Synthesizer.generate_response(question=relevant_question, context=results)
 

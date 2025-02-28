@@ -30,7 +30,7 @@ class OllamaSettings(LLMSettings):
 
     base_url: str = Field(default="http://localhost:11434/v1")
     default_model: str = Field(default="llama3.2:1b")
-    embedding_model: str = Field(default="nomic-embed-text")
+    embedding_model: str = Field(default="granite-embedding:30m")
 
 
 class DatabaseSettings(BaseModel):
@@ -43,7 +43,7 @@ class VectorStoreSettings(BaseModel):
     """Settings for the VectorStore."""
 
     table_name: str = "embeddings"
-    embedding_dimensions: int = 768
+    embedding_dimensions: int = 384
     time_partition_interval: timedelta = timedelta(days=7)
 
 

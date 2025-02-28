@@ -3,7 +3,6 @@ import pandas as pd
 from pydantic import BaseModel, Field
 from services.llm_factory import LLMFactory
 
-
 class SynthesizedResponse(BaseModel):
     thought_process: List[str] = Field(
         description="List of thoughts that the AI assistant had while synthesizing the answer"
@@ -26,9 +25,19 @@ class Synthesizer:
     3. The context is retrieved based on cosine similarity, so some information might be missing or irrelevant.
     4. Be transparent when there is insufficient information to fully answer the question.
     5. Do not make up or infer information not present in the provided context.
-    6. If you cannot answer the question based on the given context, clearly state that.
+    6. If you cannot answer the question based on the given context, clearly state that. 
     7. Maintain a helpful and professional tone appropriate for customer service.
     8. Adhere strictly to company guidelines and policies by using only the provided knowledge base.
+
+    Please provide your response in the following JSON format:
+
+    {
+    "thought_process": ["thought 1", "thought 2", ...],
+    "answer": "Your synthesized answer here",
+    "enough_context": true or false
+    }
+
+    Ensure that all three exact keys value structures and types are present in your response.
     
     Review the question from the user:
     """
