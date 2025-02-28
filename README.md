@@ -1,6 +1,6 @@
 # Building a High-Performance RAG Solution with Pgvectorscale and Python
 
-This project uses `pgvectorscale` with Docker and Python, leveraging Ollama running `nomic-embed-text` model for embeddings. It is a RAG (Retrieval-Augmented Generation) solution, combining retrieval techniques (including hybrid search) with intelligent answer generation based on the retrieved context.
+This project uses `pgvectorscale` with Docker and Python, leveraging Ollama running `granite-embedding:30m` model for embeddings. It is a RAG (Retrieval-Augmented Generation) solution, combining retrieval techniques (including hybrid search) with intelligent answer generation based on the retrieved context.
 
 ## Credits and links
 This project was forked from [Dave Ebbelaar](https://github.com/daveebbelaar)'s Pgvector RAG tutorial repo: [pgvectorscale-rag-solution](https://github.com/daveebbelaar/pgvectorscale-rag-solution)
@@ -37,7 +37,7 @@ Pgvectorscale Vector builds on top of [pgvector](https://github.com/pgvector/pgv
 - Ollama running locally via Docker or otherwise
   - Ollama models to pull:
     - Default model: `llama3.2:1b`
-    - Embedding model: `nomic-embed-text`
+    - Embedding model: `granite-embedding:30m`
 - PostgreSQL GUI client
 
 ## Steps
@@ -89,11 +89,11 @@ docker compose up -d
 
 ### 3. Create a Python script to insert document chunks as vectors
 
-See `insert_vectors.py` for the implementation. This script uses Ollama's `nomic-embed-text` model to generate embeddings.
+See `insert_vectors.py` for the implementation. This script uses Ollama's `granite-embedding:30m` model to generate embeddings.
 
 ### 4. Create a Python function to perform similarity search
 
-See `similarity_search.py` for the implementation. This script also uses OpenAI's `nomic-embed-text` model for query embedding.
+See `similarity_search.py` for the implementation. This script also uses Ollama's `granite-embedding:30m` model for query embedding.
 
 ## Usage
 
